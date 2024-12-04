@@ -37,6 +37,21 @@ async function run() {
     //------------------------------- CRUD Operations
 
     const userCollection = client.db("movieDB").collection("users");
+    const movieCollection = client.db("movieDB").collection("movies");
+
+    //---------------------------- Movies related apis start
+
+    app.post("/movies", async (req, res) => {
+      const newMovie = req.body;
+      console.log("Adding new movie to db: ", newMovie);
+
+      const result = await movieCollection.insertOne(newMovie);
+      res.send(result);
+    });
+
+    //---------------------------- Movies related apis end
+
+    //---------------------------- Users related apis start
 
     app.post("/users", async (req, res) => {
       const newUser = req.body;
@@ -45,6 +60,8 @@ async function run() {
       const result = await userCollection.insertOne(newUser);
       res.send(result);
     });
+
+    //---------------------------- Users related apis end
 
     //------------------------------- CRUD Operations
   } finally {
