@@ -13,8 +13,6 @@ app.use(cors());
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.j5yqq.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
 
-console.log(uri);
-
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
   serverApi: {
@@ -49,6 +47,15 @@ async function run() {
 
     app.get("/highRatedMovies", async (req, res) => {
       const cursor = movieCollection.find().sort({ rating: -1 }).limit(6);
+      const result = await cursor.toArray();
+      res.send(result);
+    });
+
+    app.get("/favoriteMovies", async (req, res) => {
+      const userEmail = req.query.email;
+      const query = { userEmail };
+      // console.log(query);
+      const cursor = movieCollection.find(query);
       const result = await cursor.toArray();
       res.send(result);
     });
