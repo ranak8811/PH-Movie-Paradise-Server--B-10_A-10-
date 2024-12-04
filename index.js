@@ -41,6 +41,18 @@ async function run() {
 
     //---------------------------- Movies related apis start
 
+    app.get("/allMovies", async (req, res) => {
+      const cursor = movieCollection.find();
+      const result = await cursor.toArray();
+      res.send(result);
+    });
+
+    app.get("/highRatedMovies", async (req, res) => {
+      const cursor = movieCollection.find().sort({ rating: -1 }).limit(6);
+      const result = await cursor.toArray();
+      res.send(result);
+    });
+
     app.post("/movies", async (req, res) => {
       const newMovie = req.body;
       console.log("Adding new movie to db: ", newMovie);
