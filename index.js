@@ -82,6 +82,27 @@ async function run() {
       res.send(result);
     });
 
+    app.patch("/updateMovie/:id", async (req, res) => {
+      const id = req.params.id;
+      const data = req.body;
+      const query = { _id: new ObjectId(id) };
+
+      const update = {
+        $set: {
+          posterURL: data.posterURL,
+          title: data.title,
+          genre: data.genre,
+          duration: data.duration,
+          releaseYear: data.releaseYear,
+          rating: data.rating,
+          summary: data.summary,
+        },
+      };
+
+      const result = await movieCollection.updateOne(query, update);
+      res.send(result);
+    });
+
     //---------------------------- Movies related apis end
 
     //---------------------------- Users related apis start
