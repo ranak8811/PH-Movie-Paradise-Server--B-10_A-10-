@@ -36,6 +36,7 @@ async function run() {
 
     const userCollection = client.db("movieDB").collection("users");
     const movieCollection = client.db("movieDB").collection("movies");
+    const favoriteCollection = client.db("movieDB").collection("favorites");
 
     //---------------------------- Movies related apis start
 
@@ -55,7 +56,7 @@ async function run() {
       const userEmail = req.query.email;
       const query = { userEmail };
       // console.log(query);
-      const cursor = movieCollection.find(query);
+      const cursor = favoriteCollection.find(query);
       const result = await cursor.toArray();
       res.send(result);
     });
@@ -72,6 +73,14 @@ async function run() {
       console.log("Adding new movie to db: ", newMovie);
 
       const result = await movieCollection.insertOne(newMovie);
+      res.send(result);
+    });
+
+    app.post("/favoriteMovies", async (req, res) => {
+      const favMovie = req.body;
+      console.log("Adding favorite movie to db: ", favMovie);
+
+      const result = await favoriteCollection.insertOne(favMovie);
       res.send(result);
     });
 
