@@ -51,6 +51,18 @@ async function run() {
       res.send(result);
     });
 
+    app.get("/genre/:genre", async (req, res) => {
+      const genre = req.params.genre;
+      const option = { genre: { $regex: new RegExp(genre, "i") } };
+      const cursor = movieCollection.find(option);
+      const result = await cursor.toArray();
+      if (result.length > 0) {
+        res.send(result);
+      } else {
+        res.send({ message: "No movies found in this genre." });
+      }
+    });
+
     app.get("/highRatedMovies", async (req, res) => {
       const cursor = movieCollection.find().sort({ rating: -1 }).limit(6);
       const result = await cursor.toArray();
