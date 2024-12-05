@@ -148,6 +148,37 @@ async function run() {
       res.send(result);
     });
 
+    app.put("/users", async (req, res) => {
+      const newUser = req.body;
+      const email = newUser.email;
+
+      console.log("Checking for existing user with email: ", email);
+
+      const filter = { email };
+      const updateData = {
+        name: newUser.name,
+        createdAt: newUser.createdAt,
+      };
+      const options = { upsert: true };
+
+      const result = await userCollection.updateOne(
+        filter,
+        { $set: updateData },
+        options
+      );
+
+      if (result.upsertedCount > 0) {
+        console.log("New user created in the database.");
+        res.send({ message: "New user created.", result });
+      } else if (result.modifiedCount > 0) {
+        console.log("Existing user updated in the database.");
+        res.send({ message: "Existing user updated.", result });
+      } else {
+        console.log("No changes were made to the user.");
+        res.send({ message: "No changes were made to the user.", result });
+      }
+    });
+
     //---------------------------- Users related apis end
 
     //------------------------------- CRUD Operations
