@@ -41,7 +41,12 @@ async function run() {
     //---------------------------- Movies related apis start
 
     app.get("/allMovies", async (req, res) => {
-      const cursor = movieCollection.find();
+      const { searchParams } = req.query;
+      let option = {};
+      if (searchParams) {
+        option = { title: { $regex: searchParams, $options: "i" } };
+      }
+      const cursor = movieCollection.find(option);
       const result = await cursor.toArray();
       res.send(result);
     });
