@@ -95,7 +95,7 @@ async function run() {
 
     app.post("/favoriteMovies", async (req, res) => {
       const favMovie = req.body;
-      console.log("Adding favorite movie to db: ", favMovie);
+      // console.log("Adding favorite movie to db: ", favMovie);
 
       const result = await favoriteCollection.insertOne(favMovie);
       res.send(result);
@@ -142,7 +142,7 @@ async function run() {
 
     app.post("/users", async (req, res) => {
       const newUser = req.body;
-      console.log("Adding new user to db: ", newUser);
+      // console.log("Adding new user to db: ", newUser);
 
       const result = await userCollection.insertOne(newUser);
       res.send(result);
@@ -168,13 +168,13 @@ async function run() {
       );
 
       if (result.upsertedCount > 0) {
-        console.log("New user created in the database.");
+        // console.log("New user created in the database.");
         res.send({ message: "New user created.", result });
       } else if (result.modifiedCount > 0) {
-        console.log("Existing user updated in the database.");
+        // console.log("Existing user updated in the database.");
         res.send({ message: "Existing user updated.", result });
       } else {
-        console.log("No changes were made to the user.");
+        // console.log("No changes were made to the user.");
         res.send({ message: "No changes were made to the user.", result });
       }
     });
